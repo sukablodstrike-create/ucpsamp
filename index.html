@@ -3,54 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login System</title>
+    <title>GTA SAMP UCP</title>
     <style>
-        body { background-color: #141414; font-family: Arial, sans-serif; color: #fff; }
-        .container { max-width: 500px; margin: auto; padding: 20px; border-radius: 10px; backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.1); }
-        h2 { text-align: center; }
-        form { display: flex; flex-direction: column; }
-        input[type="text"], input[type="password"] { padding: 10px; margin: 10px 0; border: none; border-radius: 5px; }
-        input[type="submit"] { padding: 10px; background: #0f0; border: none; border-radius: 5px; cursor: pointer; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #0e0e0e;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #00bfff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #008cff;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>User Login</h2>
-        <form id="userLogin">
+        <h1>GTA SAMP UCP</h1>
+        <div id="register" class="form">
+            <h2>Registration</h2>
+            <input type="text" id="reg-username" placeholder="Username" required>
+            <input type="password" id="reg-password" placeholder="Password" required>
+            <button onclick="registerUser()">Register</button>
+            <p>Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
+        </div>
+        <div id="login" class="form hidden">
+            <h2>Login</h2>
             <input type="text" id="username" placeholder="Username" required>
             <input type="password" id="password" placeholder="Password" required>
-            <input type="submit" value="Login">
-        </form>
-        <h2>Admin Login</h2>
-        <form id="adminLogin">
-            <input type="text" id="adminUsername" placeholder="Admin Username" required>
-            <input type="password" id="adminPassword" placeholder="Admin Password" required>
-            <input type="submit" value="Login">
-        </form>
+            <button onclick="loginUser()">Login</button>
+            <p>Don't have an account? <a href="#" onclick="toggleForms()">Register</a></p>
+        </div>
+        <div id="player-panel" class="hidden">
+            <h2>Player Panel</h2>
+            <button onclick="logout()">Logout</button>
+        </div>
+        <div id="admin-dashboard" class="hidden">
+            <h2>Admin Dashboard</h2>
+            <button onclick="logout()">Logout</button>
+        </div>
     </div>
     <script>
-        document.getElementById('userLogin').onsubmit = function(e) {
-            e.preventDefault();
-            // Simulated login for user
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            if (username === 'user' && password === 'password') {
-                alert('User Dashboard');
+        function toggleForms() {
+            document.getElementById("register").classList.toggle("hidden");
+            document.getElementById("login").classList.toggle("hidden");
+        }
+
+        function registerUser() {
+            const username = document.getElementById("reg-username").value;
+            const password = document.getElementById("reg-password").value;
+            localStorage.setItem(username, password);
+            alert("Registration successful!");
+            toggleForms();
+        }
+
+        function loginUser() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            if (localStorage.getItem(username) === password) {
+                alert("Login successful!");
+                document.getElementById("login").classList.add("hidden");
+                document.getElementById("player-panel").classList.remove("hidden");
             } else {
-                alert('Invalid credentials!');
+                alert("Invalid credentials!");
             }
-        };
-        document.getElementById('adminLogin').onsubmit = function(e) {
-            e.preventDefault();
-            // Simulated login for admin
-            const adminUsername = document.getElementById('adminUsername').value;
-            const adminPassword = document.getElementById('adminPassword').value;
-            if (adminUsername === 'admin' && adminPassword === 'adminpass') {
-                alert('Admin Dashboard');
-            } else {
-                alert('Invalid credentials!');
-            }
-        };
+        }
+
+        function logout() {
+            document.getElementById("player-panel").classList.add("hidden");
+            document.getElementById("admin-dashboard").classList.add("hidden");
+            toggleForms();
+        }
     </script>
 </body>
 </html>
